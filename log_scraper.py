@@ -7,22 +7,21 @@ from datetime import datetime
 
 
 class LogScraper:
-    def __init__(self, res_file, log_file):
+    def __init__(self, res_file, log_file, date_regex, log_regex):
         """
         :param res_file: csv with results filename
+        :type res_file: str
         :param log_file: logs filename
+        :type log_file: str
+        :param date_regex: RegEx for scraping date
+        :type date_regex: str
+        :param log_regex: RegEx for scraping logs
+        :type log_regex: str
         """
         self.res_file = res_file
         self.log_file = log_file
-
-        # Date format: Day, Month (letters), Year
-        self.date_regex = r'(\d{2}/.*/\d{4})'
-        # Log Format: IP, Date, Type Request, URL, Response Code, Size, Referrer, User Agent
-        self.log_regex = r'(\S+).*\[(.*)\] "(\S+) (\S+) HTTP/.*" ' \
-                         r'(\S+) (\S+) "(.*)" "(.*)"$'
-
-        # If log line starts with abracadabra nginx.1 abracadabra :)
-        # self.log_regex = r'domain\.com (\S+).*\[(.*)\] "(\S+) (\S+) HTTP.*" (\S+) (\S+) "(.*)" "(.*)"$'
+        self.date_regex = date_regex
+        self.log_regex = log_regex
 
     def get_date(self, raw_line):
         """
